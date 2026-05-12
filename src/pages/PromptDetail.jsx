@@ -111,6 +111,7 @@ export default function PromptDetail() {
   const cat = prompt.categories
   const color = CATEGORY_COLORS[cat?.slug] || '#6366f1'
   const isOwner = user?.id === prompt.user_id
+  const canDelete = isOwner || profile?.is_admin
 
   return (
     <div style={{ minHeight: '100vh', paddingTop: 80, paddingBottom: 80, background: '#0d0d14' }}>
@@ -149,13 +150,12 @@ export default function PromptDetail() {
               )}
             </div>
             <div style={{ display: 'flex', gap: 8 }}>
-            <div style={{ display: 'flex', gap: 8 }}>
-              {isOwner && (
+              {canDelete && (
                 <button onClick={deletePrompt} style={{
                   padding: '6px 14px', borderRadius: 8, border: '1px solid rgba(239,68,68,0.3)',
                   background: 'transparent', color: '#ef4444', fontSize: 13, cursor: 'pointer',
                 }}>
-                  Удалить
+                  {profile?.is_admin && !isOwner ? '🛡 Удалить (модерация)' : 'Удалить'}
                 </button>
               )}
             </div>
