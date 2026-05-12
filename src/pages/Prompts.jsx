@@ -42,7 +42,7 @@ export default function Prompts() {
     setLoading(true)
     let query = supabase
       .from('prompts')
-      .select('*, categories(name, slug), profiles(username)')
+      .select('*, categories(name, slug), profiles(username), ai_models(name, slug)')
       .order('created_at', { ascending: false })
     if (categoryId) query = query.eq('category_id', categoryId)
     const { data } = await query
@@ -217,6 +217,19 @@ function PromptCard({ prompt, liked, onLike }) {
         }}>
           {prompt.description}
         </p>
+      )}
+
+      {/* Модель */}
+      {prompt.ai_models && (
+        <div style={{ marginBottom: 10 }}>
+          <span style={{
+            fontSize: 11, fontWeight: 600, color: '#94a3b8',
+            background: 'rgba(148,163,184,0.08)', border: '1px solid #2d2d44',
+            padding: '2px 8px', borderRadius: 5,
+          }}>
+            {prompt.ai_models.name}
+          </span>
+        </div>
       )}
 
       {/* Футер: автор + лайки */}

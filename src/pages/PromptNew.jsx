@@ -8,10 +8,12 @@ export default function PromptNew() {
   const navigate = useNavigate()
 
   const [categories, setCategories] = useState([])
+  const [models, setModels]         = useState([])
   const [title, setTitle]           = useState('')
   const [description, setDescription] = useState('')
   const [content, setContent]       = useState('')
   const [categoryId, setCategoryId] = useState('')
+  const [modelId, setModelId]       = useState('')
   const [saving, setSaving]         = useState(false)
   const [error, setError]           = useState('')
 
@@ -23,6 +25,9 @@ export default function PromptNew() {
     supabase.from('categories').select('*').order('id').then(({ data }) => {
       setCategories(data || [])
       if (data?.length) setCategoryId(data[0].id)
+    })
+    supabase.from('ai_models').select('id, name, slug').order('name').then(({ data }) => {
+      setModels(data || [])
     })
   }, [])
 
@@ -37,6 +42,7 @@ export default function PromptNew() {
       description: description.trim() || null,
       content: content.trim(),
       category_id: Number(categoryId),
+      ai_model_id: modelId ? Number(modelId) : null,
     })
     setSaving(false)
     if (error) setError(error.message)
@@ -95,6 +101,24 @@ export default function PromptNew() {
               >
                 {categories.map(cat => (
                   <option key={cat.id} value={cat.id}>{cat.name}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label style={{ display: 'block', fontSize: 13, color: '#94a3b8', marginBottom: 6 }}>AI-модель</label>
+              <select
+                value={modelId}
+                onChange={e => setModelId(e.target.value)}
+                style={{
+                  width: '100%', padding: '11px 14px', background: '#0d0d14',
+                  border: '1px solid #2d2d44', borderRadius: 10, color: modelId ? '#fff' : '#64748b',
+                  fontSize: 14, outline: 'none', boxSizing: 'border-box', cursor: 'pointer',
+                }}
+              >
+                <option value=''>Не указана</option>
+                {models.map(m => (
+                  <option key={m.id} value={m.id}>{m.name}</option>
                 ))}
               </select>
             </div>

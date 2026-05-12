@@ -40,7 +40,7 @@ export default function PromptDetail() {
     setLoading(true)
     const { data } = await supabase
       .from('prompts')
-      .select('*, categories(name, slug), profiles(username)')
+      .select('*, categories(name, slug), profiles(username), ai_models(name, slug)')
       .eq('id', id)
       .single()
     setPrompt(data)
@@ -128,15 +128,27 @@ export default function PromptDetail() {
 
           {/* Категория + действия */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, flexWrap: 'wrap', gap: 10 }}>
-            {cat && (
-              <span style={{
-                fontSize: 11, fontWeight: 600, color,
-                background: `${color}18`, border: `1px solid ${color}40`,
-                padding: '3px 10px', borderRadius: 6,
-              }}>
-                {cat.name}
-              </span>
-            )}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+              {cat && (
+                <span style={{
+                  fontSize: 11, fontWeight: 600, color,
+                  background: `${color}18`, border: `1px solid ${color}40`,
+                  padding: '3px 10px', borderRadius: 6,
+                }}>
+                  {cat.name}
+                </span>
+              )}
+              {prompt.ai_models && (
+                <span style={{
+                  fontSize: 11, fontWeight: 600, color: '#94a3b8',
+                  background: 'rgba(148,163,184,0.08)', border: '1px solid #2d2d44',
+                  padding: '3px 10px', borderRadius: 6,
+                }}>
+                  {prompt.ai_models.name}
+                </span>
+              )}
+            </div>
+            <div style={{ display: 'flex', gap: 8 }}>
             <div style={{ display: 'flex', gap: 8 }}>
               {isOwner && (
                 <button onClick={deletePrompt} style={{
