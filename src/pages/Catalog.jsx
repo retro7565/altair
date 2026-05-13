@@ -51,6 +51,10 @@ export default function Catalog() {
   const [category, setCategory] = useState(null)
 
   useEffect(() => {
+    document.title = 'Каталог AI инструментов — нейросети для работы 2025 | Altair'
+  }, [])
+
+  useEffect(() => {
     async function fetchModels() {
       setLoading(true)
       let query = supabase.from('ai_models').select('*').order('id')

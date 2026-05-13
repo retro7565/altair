@@ -24,6 +24,10 @@ export default function Prompts() {
   const [likedIds, setLikedIds]     = useState(new Set())
 
   useEffect(() => {
+    document.title = 'Промпты для нейросетей — библиотека промптов для ChatGPT и других AI | Altair'
+  }, [])
+
+  useEffect(() => {
     supabase.from('categories').select('*').order('id').then(({ data }) => setCategories(data || []))
   }, [])
 

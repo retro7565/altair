@@ -48,6 +48,10 @@ export default function Home() {
   const [prompts, setPrompts] = useState([])
 
   useEffect(() => {
+    document.title = 'Altair — каталог AI инструментов и промпты для нейросетей'
+  }, [])
+
+  useEffect(() => {
     supabase.from('ai_models').select('*').order('id').limit(6).then(({ data }) => setModels(data || []))
     supabase.from('prompts').select('*, categories(name, slug), profiles(username)')
       .order('likes_count', { ascending: false }).limit(3).then(({ data }) => setPrompts(data || []))

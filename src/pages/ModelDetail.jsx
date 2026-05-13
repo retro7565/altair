@@ -80,6 +80,7 @@ export default function ModelDetail() {
         .eq('slug', slug)
         .single()
       setModel(data || null)
+      if (data) document.title = `${data.name} — нейросеть для работы | Altair`
       setLoading(false)
     }
     fetchModel()
